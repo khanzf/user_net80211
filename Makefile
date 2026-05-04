@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -O2 -g -I.
 
-OBJS = main.o ieee80211.o athn_rxeof.o mbuf.o
+OBJS = main.o ieee80211.o athn_rxeof.o mbuf.o mycompat.o
 
 mbuf_test: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^

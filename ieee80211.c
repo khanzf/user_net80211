@@ -1,5 +1,6 @@
 #include <string.h>
 #include <string.h>
+#include "mycompat.h"
 #include "ieee80211.h"
 
 void init_ieee80211com(struct ieee80211com *ic, void *softc)

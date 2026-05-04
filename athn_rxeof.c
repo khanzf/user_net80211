@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "athn.h"
 #include "mycompat.h"
+#include "athn.h"
 
 void
 athn_usb_rx_frame(struct athn_usb_softc *usc, struct mbuf *m)
