@@ -37,26 +37,19 @@
 #define __predict_false(x)  __builtin_expect(!!(x), 0)
 #endif
 
-/* ==================== Endianness ==================== */
+/* ==================== Endianness - Force definitions ==================== */
 #if OS_FREEBSD
 #  include <sys/endian.h>
 #else
 #  include <endian.h>
 #endif
 
-/* Ensure all common macros exist on both platforms */
-#ifndef htole16
-#define htole16(x)  htole16(x)
-#endif
-#ifndef le16toh
-#define le16toh(x)  le16toh(x)
-#endif
-
-#ifndef htole32
-#define htole32(x)  htole32(x)
-#endif
-#ifndef le32toh
-#define le32toh(x)  le32toh(x)
+/* Explicitly define as inline functions on FreeBSD to avoid macro issues */
+#if OS_FREEBSD
+static inline uint16_t htole16(uint16_t x) { return x; }
+static inline uint16_t le16toh(uint16_t x) { return x; }
+static inline uint32_t htole32(uint32_t x) { return x; }
+static inline uint32_t le32toh(uint32_t x) { return x; }
 #endif
 
 /* OpenBSD-style compatibility */
