@@ -196,10 +196,22 @@ struct ieee80211com {
 #define IEEE80211_M_HOSTAP      3
 #define IEEE80211_M_MONITOR     4
 
+#define IEEE80211_ADDR_LEN  6       /* size of 802.11 address */
+
+struct ieee80211_frame {
+    uint8_t     i_fc[2];
+    uint8_t     i_dur[2];
+    uint8_t     i_addr1[IEEE80211_ADDR_LEN];
+    uint8_t     i_addr2[IEEE80211_ADDR_LEN];
+    uint8_t     i_addr3[IEEE80211_ADDR_LEN];
+    uint8_t     i_seq[2];
+    /* possibly followed by addr4[IEEE80211_ADDR_LEN]; */
+    /* see below */
+} __packed;
+
 
 
 #define ieee80211_find_rxnode(ic, wh) NULL;
-
-
+unsigned int ieee80211_hdrsize(const void *data);
 
 #endif

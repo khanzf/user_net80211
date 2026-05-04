@@ -20,19 +20,23 @@ void init_ieee80211com(struct ieee80211com *ic, void *softc)
     ic->ic_curchan = &dummy_chan;
 }
 
-static inline unsigned int
-ieee80211_get_hdrlen(uint16_t fc)
+unsigned int
+ieee80211_hdrsize(const void *data)
 {
-    unsigned int hdrlen = 24;   /* Minimum header: 3 addresses */
+    const struct ieee80211_frame *wh = (const struct ieee80211_frame *)data;
+    uint16_t fc = le16toh(*(const uint16_t *)wh->i_fc);
+    unsigned int hdrlen;
 
     switch (fc & IEEE80211_FC0_TYPE_MASK) {
     case IEEE80211_FC0_TYPE_DATA:
-        if (fc & (IEEE80211_FC1_DIR_FROMDS | IEEE80211_FC1_DIR_TODS))
-            hdrlen = 30;        /* 4 addresses (WDS / Mesh) */
+        if ((fc & (IEEE80211_FC1_DIR_FROMDS | IEEE80211_FC1_DIR_TODS)) ==
+            (IEEE80211_FC1_DIR_FROMDS | IEEE80211_FC1_DIR_TODS))
+            hdrlen = 30;                    /* 4 address fields */
+        else
+            hdrlen = 24;                    /* 3 address fields */
 
-        if (fc & IEEE80211_FC0_SUBTYPE_QOS) {
-            hdrlen += 2;        /* QoS Control field */
-        }
+        if (fc & IEEE80211_FC0_SUBTYPE_QOS)
+            hdrlen += 2;                    /* QoS Control */
         break;
 
     case IEEE80211_FC0_TYPE_CTL:
@@ -42,19 +46,18 @@ ieee80211_get_hdrlen(uint16_t fc)
             hdrlen = 10;
             break;
         default:
-            hdrlen = 16;        /* RTS, BAR, etc. */
+            hdrlen = 16;
             break;
         }
         break;
 
     case IEEE80211_FC0_TYPE_MGT:
-        /* Management frames have 24 bytes header */
+    default:
         hdrlen = 24;
         break;
     }
 
-    /* Add HT Control field (4 bytes) if present */
-    if (fc & IEEE80211_FC1_ORDER)
+    if (fc & IEEE80211_FC1_ORDER)           /* HT Control field */
         hdrlen += 4;
 
     return hdrlen;

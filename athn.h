@@ -1,8 +1,14 @@
 #ifndef ATHN_H
 #define ATHN_H
 
-#include "other.h"
+#include "mycompat.h"
 #include "ieee80211.h"
+
+struct athn_usb_rx_data {
+	struct athn_usb_softc	*sc;
+//	struct usbd_xfer	*xfer;
+	uint8_t			*buf;
+};
 
 struct athn_usb_rx_stream {
 	struct mbuf	*m;

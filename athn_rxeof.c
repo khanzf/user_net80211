@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "athn.h"
-#include "other.h"
+#include "mycompat.h"
 
 void
 athn_usb_rx_frame(struct athn_usb_softc *usc, struct mbuf *m)
@@ -57,7 +57,7 @@ athn_usb_rx_frame(struct athn_usb_softc *usc, struct mbuf *m)
 
 	/* Remove any HW padding after the 802.11 header. */
 	if (!(wh->i_fc[0] & IEEE80211_FC0_TYPE_CTL)) {
-		uint32_t hdrlen = ieee80211_get_hdrlen(wh);
+		uint32_t hdrlen = ieee80211_hdrsize(wh);
 		if (hdrlen & 3) {
 			memmove((caddr_t)wh + 2, wh, hdrlen);
 			m_adj(m, 2);
