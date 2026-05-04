@@ -1,6 +1,8 @@
 #ifndef COMPAT_H
 #define COMPAT_H
 
+#include <stdint.h>
+
 #if defined(__FreeBSD__)
 #  include <sys/endian.h>
 #  define OS_FREEBSD 1
@@ -10,6 +12,14 @@
 #  include <endian.h>
 #  define OS_FREEBSD 0
 #  define OS_LINUX   1
+
+#define __predict_true(exp)   (exp)
+#define __predict_false(exp)  (exp)
+
+uint16_t htole16(uint16_t x);
+uint16_t le16toh(uint16_t x);
+
+
 #else
 #  error "Unsupported OS"
 #endif
