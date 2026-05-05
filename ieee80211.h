@@ -213,5 +213,6 @@ struct ieee80211_frame {
 
 #define ieee80211_find_rxnode(ic, wh) NULL;
 unsigned int ieee80211_hdrsize(const void *data);
+void ieee80211_input_all(struct mbuf *, int rssi, int nf);
 
 #endif

@@ -78,4 +78,6 @@ struct athn_usb_softc {
 	struct athn_usb_rx_stream rx_stream;
 };
 
+void athn_usb_rxeof(struct athn_usb_rx_data *data, int actlen);
+
 #endif

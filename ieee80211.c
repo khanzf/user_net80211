@@ -63,3 +63,9 @@ ieee80211_hdrsize(const void *data)
 
     return hdrlen;
 }
+
+void
+ieee80211_input_all(struct mbuf *, int, int)
+{
+	printf("Final Input Analysis\n");
+}
